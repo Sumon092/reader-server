@@ -17,6 +17,27 @@ const registerUser = async (req, res) => {
     });
   }
 };
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const result = await userService.loginUser(email, password);
+
+    res.json({
+      status: 201,
+      message: "Login Successful",
+      success: true,
+      token: result,
+    });
+  } catch (error) {
+    res.json({
+      status: 401,
+      message: error.message,
+      success: false,
+    });
+  }
+};
 module.exports = {
   registerUser,
+  loginUser,
 };

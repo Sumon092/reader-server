@@ -1,5 +1,7 @@
 const User = require("./user.model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const createUser = async (userInfo) => {
   const { email, password } = userInfo;
@@ -18,7 +20,21 @@ const createUser = async (userInfo) => {
     throw new Error("User with this email is already exist");
   }
 };
+const loginUser = async (email, password) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new Error("Invalid user or password");
+  }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    throw new Error("Invalid user or password");
+  }
+  const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
+  console.log(token);
+  return token;
+};
 
 module.exports = {
   createUser,
+  loginUser,
 };
