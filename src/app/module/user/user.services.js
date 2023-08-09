@@ -37,7 +37,17 @@ const loginUser = async (email, password) => {
   return token;
 };
 
+const getAuthUser = async (email) => {
+  const user = await User.findOne({ email });
+  if (user) {
+    return user;
+  } else {
+    throw new Error("user is not authenticated");
+  }
+};
+
 module.exports = {
   createUser,
   loginUser,
+  getAuthUser,
 };

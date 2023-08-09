@@ -37,8 +37,25 @@ const loginUser = async (req, res) => {
     });
   }
 };
-
+const getAuthUser = async (req, res) => {
+  try {
+    const email = req.decoded;
+    const user = await userService.getAuthUser(email);
+    res.json({
+      status: 200,
+      success: true,
+      user: user,
+    });
+  } catch (error) {
+    res.json({
+      status: 400,
+      success: false,
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   registerUser,
   loginUser,
+  getAuthUser,
 };

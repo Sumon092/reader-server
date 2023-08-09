@@ -24,6 +24,7 @@ const verifyToken = (req, res, next) => {
         message: "forbidden access",
       });
     }
+    req.decoded = decoded.email;
     req.user = decoded;
     next();
   });
