@@ -29,7 +29,10 @@ const loginUser = async (email, password) => {
   if (!isPasswordValid) {
     throw new Error("Invalid user or password");
   }
-  const token = jwt.sign({ userId: user._id }, process.env.ACCESS_TOKEN_SECRET);
+  const token = jwt.sign(
+    { email: user.email },
+    process.env.ACCESS_TOKEN_SECRET
+  );
   console.log(token);
   return token;
 };
