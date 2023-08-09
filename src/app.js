@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const userRoutes = require("./app/module/user/user.route.js");
 
 const app = express();
 app.use(cors());
@@ -10,5 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (req, res) => {
   res.send("book server is running");
 });
+
+app.use("/api/v1/users", userRoutes);
 
 module.exports = app;
