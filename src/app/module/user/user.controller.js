@@ -39,12 +39,12 @@ const loginUser = async (req, res) => {
 };
 const getAuthUser = async (req, res) => {
   try {
-    const email = req.decoded;
-    const user = await userService.getAuthUser(email);
+    const user = req.decoded;
+    await userService.getAuthUser(user);
     res.json({
       status: 200,
       success: true,
-      user: user,
+      email: user,
     });
   } catch (error) {
     res.json({
