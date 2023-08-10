@@ -5,7 +5,7 @@ const registerUser = async (req, res) => {
     const result = await userService.createUser(userInfo);
     res.json({
       status: 201,
-      message: "user created successfully",
+      message: "User registered successfully",
       success: true,
       data: result,
     });
@@ -17,7 +17,6 @@ const registerUser = async (req, res) => {
     });
   }
 };
-
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;

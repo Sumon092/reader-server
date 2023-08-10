@@ -17,6 +17,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  wishLists: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Books",
+    },
+  ],
+  reading: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Books",
+    },
+  ],
   ownedBook: [
     {
       type: mongoose.Schema.Types.ObjectId,

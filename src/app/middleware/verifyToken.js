@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
   const token = authorizationHeader.split(" ")[1];
   if (!token) {
     return res.json({
-      status: 401,
+      status: 404,
       message: "token not found",
     });
   }

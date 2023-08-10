@@ -17,7 +17,7 @@ const createUser = async (userInfo) => {
     await user.save();
     return user;
   } else {
-    throw new Error("User with this email is already exist");
+    throw new Error("User already exist");
   }
 };
 const loginUser = async (email, password) => {
@@ -33,7 +33,6 @@ const loginUser = async (email, password) => {
     { email: user.email },
     process.env.ACCESS_TOKEN_SECRET
   );
-  console.log(token);
   return token;
 };
 
