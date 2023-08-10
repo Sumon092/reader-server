@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
       ref: "Books",
     },
   ],
-  ownedBook: [
+  ownedBooks: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Books",

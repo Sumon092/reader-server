@@ -19,9 +19,14 @@ const bookSchema = new mongoose.Schema({
   },
   reviews: {
     type: String,
-    required: true,
   },
   liked: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  bookOwner: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
-const Book = mongoose.model("House", bookSchema);
+const Book = mongoose.model("Books", bookSchema);
 module.exports = Book;
