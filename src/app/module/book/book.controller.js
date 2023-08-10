@@ -1,5 +1,4 @@
 const bookService = require("./book.services.js");
-const mongoose = require("mongoose");
 const addBook = async (req, res) => {
   try {
     const bookData = req.body;
@@ -58,4 +57,24 @@ const getSingleBook = async (req, res) => {
   }
 };
 
-module.exports = { addBook, getAllBook, getSingleBook };
+const updateBook = async (req, res) => {
+  try {
+    const updateData = req.body;
+    const bookId = req.params.bookId;
+    const updateBook = await bookService.updateBook(bookId, updateData);
+    res.json({
+      status: 200,
+      success: true,
+      message: "Update successful",
+      data: updateBook,
+    });
+  } catch (error) {
+    res.json({
+      status: 401,
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = { addBook, getAllBook, getSingleBook, updateBook };

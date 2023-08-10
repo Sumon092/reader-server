@@ -7,5 +7,6 @@ const router = express.Router();
 router.post("/add-book", verifyToken, bookController.addBook);
 router.get("/all-book", bookController.getAllBook);
 router.get("/:bookId", bookController.getSingleBook);
+router.patch("/:bookId", bookController.updateBook);
 
 module.exports = router;

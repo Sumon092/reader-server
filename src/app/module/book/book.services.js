@@ -31,8 +31,17 @@ const getSingleBook = async (id) => {
   throw new Error("Book not found");
 };
 
+const updateBook = async (id, updateData) => {
+  const updatedBook = await Book.findByIdAndUpdate(id, updateData, {
+    new: true,
+  });
+  if (updatedBook) return updatedBook;
+  throw new Error("Book not found");
+};
+
 module.exports = {
   addBook,
   getAllBook,
-  getSingleBook
+  getSingleBook,
+  updateBook,
 };
