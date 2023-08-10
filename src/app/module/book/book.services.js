@@ -20,6 +20,12 @@ const addBook = async (bookData, ownerId) => {
   return bookInfo;
 };
 
+const getAllBook = async () => {
+  const books = await Book.find();
+  return books;
+};
+
 module.exports = {
   addBook,
+  getAllBook,
 };

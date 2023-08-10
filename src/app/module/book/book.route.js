@@ -5,5 +5,6 @@ const verifyToken = require("../../middleware/verifyToken.js");
 const router = express.Router();
 
 router.post("/add-book", verifyToken, bookController.addBook);
+router.get("/all-book", bookController.getAllBook);
 
 module.exports = router;
