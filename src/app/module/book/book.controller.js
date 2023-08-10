@@ -96,4 +96,31 @@ const deleteBook = async (req, res) => {
   }
 };
 
-module.exports = { addBook, getAllBook, getSingleBook, updateBook, deleteBook };
+const addToWishList = async (req, res) => {
+  try {
+    const email = req.user.email;
+    const bookId = req.body.bookId;
+    const wishListed = await bookService.addToWishListService(email, bookId);
+    res.json({
+      status: 200,
+      success: true,
+      message: "Added to wishlist",
+      data: wishListed,
+    });
+  } catch (error) {
+    res.json({
+      status: 401,
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+module.exports = {
+  addBook,
+  getAllBook,
+  getSingleBook,
+  updateBook,
+  deleteBook,
+  addToWishList,
+};

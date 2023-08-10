@@ -48,10 +48,41 @@ const deleteBook = async (id) => {
   return deletedBook;
 };
 
+const addToWishListService = async (email, bookId) => {
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  if (user.wishLists.includes(bookId)) {
+    throw new Error("Book already wish listed");
+  }
+  const wishList = await User.findOneAndUpdate(
+    { email: email },
+    { $push: { wishLists: bookId } },
+    { new: true }
+  );
+  return wishList;
+};
+
+const addToReading = async (email, bookId) => {
+  const user = await User.findOne({ email: email });
+  if (user.reading.includes(bookId)) {
+    throw new Error("You already reading this book");
+  }
+  const reading = await User.findOneAndUpdate(
+    { email: email },
+    { $push: { reading: bookId } },
+    { new: true }
+  );
+  return reading;
+};
+
 module.exports = {
   addBook,
   getAllBook,
   getSingleBook,
   updateBook,
   deleteBook,
+  addToWishListService,
+  addToReading
 };
