@@ -25,7 +25,14 @@ const getAllBook = async () => {
   return books;
 };
 
+const getSingleBook = async (id) => {
+  const book = await Book.findById(id);
+  if (book) return book;
+  throw new Error("Book not found");
+};
+
 module.exports = {
   addBook,
   getAllBook,
+  getSingleBook
 };

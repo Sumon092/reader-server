@@ -38,4 +38,24 @@ const getAllBook = async (req, res) => {
   }
 };
 
-module.exports = { addBook,getAllBook };
+const getSingleBook = async (req, res) => {
+  try {
+    const bookId = req.params.bookId;
+    const book = await bookService.getSingleBook(bookId);
+
+    res.json({
+      status: 200,
+      message: "retrieve book successfully",
+      success: true,
+      book: book,
+    });
+  } catch (error) {
+    res.json({
+      status: 401,
+      message: error.message,
+      success: false,
+    });
+  }
+};
+
+module.exports = { addBook, getAllBook, getSingleBook };
