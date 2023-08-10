@@ -39,9 +39,19 @@ const updateBook = async (id, updateData) => {
   throw new Error("Book not found");
 };
 
+const deleteBook = async (id) => {
+  const deletedBook = await Book.findByIdAndDelete(id);
+  if (!deletedBook) {
+    throw new Error("Book not found");
+  }
+
+  return deletedBook;
+};
+
 module.exports = {
   addBook,
   getAllBook,
   getSingleBook,
   updateBook,
+  deleteBook,
 };
