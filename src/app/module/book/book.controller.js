@@ -115,6 +115,25 @@ const addToWishList = async (req, res) => {
     });
   }
 };
+const addToReading = async (req, res) => {
+  try {
+    const email = req.user.email;
+    const bookId = req.body.bookId;
+    const addedReading = await bookService.addToReading(email, bookId);
+    res.json({
+      status: 200,
+      message: "Book added to reading",
+      success: true,
+      data: addedReading,
+    });
+  } catch (error) {
+    res.json({
+      status: 401,
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 module.exports = {
   addBook,
@@ -123,4 +142,5 @@ module.exports = {
   updateBook,
   deleteBook,
   addToWishList,
+  addToReading,
 };

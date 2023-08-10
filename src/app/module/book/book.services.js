@@ -84,5 +84,5 @@ module.exports = {
   updateBook,
   deleteBook,
   addToWishListService,
-  addToReading
+  addToReading,
 };
