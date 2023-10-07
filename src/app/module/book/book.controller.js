@@ -1,3 +1,4 @@
+const pick = require("../../../shared/pick.js");
 const bookService = require("./book.services.js");
 const addBook = async (req, res) => {
   try {
@@ -21,7 +22,8 @@ const addBook = async (req, res) => {
 };
 const getAllBook = async (req, res) => {
   try {
-    const result = await bookService.getAllBook();
+    const filter = pick(req.query, ["searchTerm", "genre", "publication_year"]);
+    const result = await bookService.getAllBook(filter);
     res.json({
       status: 200,
       message: "retrieve books successfully",

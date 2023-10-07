@@ -20,8 +20,33 @@ const addBook = async (bookData, ownerId) => {
   return bookInfo;
 };
 
-const getAllBook = async () => {
-  const books = await Book.find();
+const getAllBook = async (filter) => {
+  const { searchTerm, ...filterData } = filter;
+  const andConditions = [];
+  if (searchTerm) {
+    andConditions.push({
+      $or: ["title", "author", "genre"].map((field) => ({
+        [field]: {
+          $regex: searchTerm,
+          $options: "i",
+        },
+      })),
+    });
+  }
+  if (Object.keys(filterData).length) {
+    andConditions.push({
+      $and: Object.entries(filterData).map(([field, value]) => ({
+        [field]: value,
+      })),
+    });
+  }
+  const whereConditions =
+    andConditions.length > 0 ? { $and: andConditions } : {};
+  // const sortConditions = {};
+  // if (sortBy && sortOrder) {
+  //   sortConditions[sortBy] = sortOrder;
+  // }
+  const books = await Book.find(whereConditions);
   return books;
 };
 
