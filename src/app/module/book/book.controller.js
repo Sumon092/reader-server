@@ -63,7 +63,9 @@ const updateBook = async (req, res) => {
   try {
     const updateData = req.body;
     const bookId = req.params.bookId;
-    const updateBook = await bookService.updateBook(bookId, updateData);
+    const authUser=req.user.email;
+    
+    const updateBook = await bookService.updateBook(bookId, updateData,authUser);
     res.json({
       status: 200,
       success: true,
@@ -82,8 +84,8 @@ const updateBook = async (req, res) => {
 const deleteBook = async (req, res) => {
   try {
     bookId = req.params.bookId;
-    console.log(bookId, "book id");
-    await bookService.deleteBook(bookId);
+    const authUser=req.user.email;
+    await bookService.deleteBook(bookId,authUser);
     res.json({
       status: 200,
       success: true,

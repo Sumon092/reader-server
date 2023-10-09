@@ -42,10 +42,6 @@ const getAllBook = async (filter) => {
   }
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  // const sortConditions = {};
-  // if (sortBy && sortOrder) {
-  //   sortConditions[sortBy] = sortOrder;
-  // }
   const books = await Book.find(whereConditions);
   return books;
 };
@@ -56,21 +52,35 @@ const getSingleBook = async (id) => {
   throw new Error("Book not found");
 };
 
-const updateBook = async (id, updateData) => {
-  const updatedBook = await Book.findByIdAndUpdate(id, updateData, {
-    new: true,
-  });
-  if (updatedBook) return updatedBook;
-  throw new Error("Book not found");
-};
+const updateBook = async (id, updateData, email) => {
+  const user = await User.findOne({ email });
+  const userId = user?._id;
+  const owner = await Book.findOne({ _id: id });
+  const ownerId = owner.bookOwner[0];
 
-const deleteBook = async (id) => {
-  const deletedBook = await Book.findByIdAndDelete(id);
-  if (!deletedBook) {
+  if (userId.equals(ownerId)) {
+    const updatedBook = await Book.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
+    if (updatedBook) return updatedBook;
     throw new Error("Book not found");
+  } else {
+    throw new Error("You are not authenticated to update this book");
   }
+};
+const deleteBook = async (id, email) => {
+  const user = await User.findOne({ email });
+  const userId = user?._id;
+  const owner = await Book.findOne({ _id: id });
+  const ownerId = owner.bookOwner[0];
 
-  return deletedBook;
+  if (userId.equals(ownerId)) {
+    const deletedBook = await Book.findByIdAndUpdate(id);
+    if (deletedBook) return deletedBook;
+    throw new Error("Book not found");
+  } else {
+    throw new Error("You are not authenticated to delete this book");
+  }
 };
 
 const addToWishListService = async (email, bookId) => {
