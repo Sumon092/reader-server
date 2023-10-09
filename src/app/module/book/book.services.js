@@ -2,12 +2,12 @@ const User = require("../user/user.model");
 const Book = require("./book.model");
 
 const addBook = async (bookData, ownerId) => {
-  const books = new Book(bookData);
-  await books.save();
   const user = await User.findOne({ email: ownerId });
   if (!user) {
     throw new Error(`User with email ${ownerId} not found.`);
   }
+  const books = new Book(bookData);
+  await books.save();
   await User.findOneAndUpdate(
     { email: ownerId },
     { $push: { ownedBooks: books._id } }

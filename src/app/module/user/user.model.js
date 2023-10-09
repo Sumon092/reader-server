@@ -16,23 +16,27 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+    select: 0,
   },
   wishLists: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Books",
+      select: 0,
     },
   ],
   reading: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Books",
+      select: 0,
     },
   ],
   ownedBooks: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Books",
+      select: 0,
     },
   ],
 });
