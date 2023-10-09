@@ -3,11 +3,12 @@ const registerUser = async (req, res) => {
   try {
     const userInfo = req.body;
     const result = await userService.createUser(userInfo);
+    const { name, email, phoneNumber, _id } = result;
     res.json({
       status: 201,
       message: "User registered successfully",
       success: true,
-      data: result,
+      data: { name, email, phoneNumber, _id },
     });
   } catch (error) {
     res.json({

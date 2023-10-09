@@ -14,6 +14,7 @@ const createUser = async (userInfo) => {
       phoneNumber: userInfo.phoneNumber,
       password: hashedPassword,
     });
+
     await user.save();
     return user;
   } else {
