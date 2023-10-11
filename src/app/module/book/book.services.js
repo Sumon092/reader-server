@@ -112,6 +112,23 @@ const addToReading = async (email, bookId) => {
   return reading;
 };
 
+const addReview = async (bookId, review) => {
+  try {
+    const book = await Book.findById({ _id: bookId });
+
+    if (!book) {
+      throw new Error("Book not found");
+    }
+
+    book.reviews.push(review);
+    await book.save();
+
+    return book;
+  } catch (error) {
+    throw new Error("Error adding review: " + error.message);
+  }
+};
+
 module.exports = {
   addBook,
   getAllBook,
@@ -120,4 +137,5 @@ module.exports = {
   deleteBook,
   addToWishListService,
   addToReading,
+  addReview,
 };

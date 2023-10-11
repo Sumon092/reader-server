@@ -139,6 +139,18 @@ const addToReading = async (req, res) => {
   }
 };
 
+const addReviewController = async (req, res) => {
+  const { bookId } = req.params;
+  const { review } = req.body;
+
+  try {
+    const updatedBook = await bookService.addReview(bookId, review);
+    res.json({ success: true, book: updatedBook, message: 'Review added successfully.' });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
 module.exports = {
   addBook,
   getAllBook,
@@ -147,4 +159,5 @@ module.exports = {
   deleteBook,
   addToWishList,
   addToReading,
+  addReviewController
 };
