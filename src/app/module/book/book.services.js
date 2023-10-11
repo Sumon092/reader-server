@@ -42,12 +42,12 @@ const getAllBook = async (filter) => {
   }
   const whereConditions =
     andConditions.length > 0 ? { $and: andConditions } : {};
-  const books = await Book.find(whereConditions);
+  const books = await Book.find(whereConditions).sort({ createdAt: -1 });
   return books;
 };
 
 const getSingleBook = async (id) => {
-  const book = await Book.findById(id);
+  const book = await Book.findOne({ _id: id });
   if (book) return book;
   throw new Error("Book not found");
 };
@@ -75,7 +75,7 @@ const deleteBook = async (id, email) => {
   const ownerId = owner.bookOwner[0];
 
   if (userId.equals(ownerId)) {
-    const deletedBook = await Book.findByIdAndUpdate(id);
+    const deletedBook = await Book.findOneAndDelete(id);
     if (deletedBook) return deletedBook;
     throw new Error("Book not found");
   } else {
