@@ -84,11 +84,12 @@ const deleteBook = async (id, email) => {
 };
 
 const addToWishListService = async (email, bookId) => {
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email });
   if (!user) {
     throw new Error("User not found");
   }
-  if (user.wishLists.includes(bookId)) {
+
+  if (user?.wishLists?.includes(bookId)) {
     throw new Error("Book already wish listed");
   }
   const wishList = await User.findOneAndUpdate(
@@ -101,7 +102,7 @@ const addToWishListService = async (email, bookId) => {
 
 const addToReading = async (email, bookId) => {
   const user = await User.findOne({ email: email });
-  if (user.reading.includes(bookId)) {
+  if (user?.reading?.includes(bookId)) {
     throw new Error("You already reading this book");
   }
   const reading = await User.findOneAndUpdate(
@@ -120,13 +121,31 @@ const addReview = async (bookId, review) => {
       throw new Error("Book not found");
     }
 
-    book.reviews.push(review);
+    book.reviews.unshift(review);
     await book.save();
 
     return book;
   } catch (error) {
     throw new Error("Error adding review: " + error.message);
   }
+};
+
+const getReviewById = async (bookId) => {
+  const book = await Book.findOne({ _id: bookId });
+  if (!book) {
+    throw new Error("Book not found");
+  }
+
+  return book;
+};
+
+const getWishLists = async (email) => {
+  const wishLists = await User.findOne({email}).populate('wishLists');
+  return wishLists;
+};
+const getReadingBook = async (email) => {
+  const wishLists = await User.findOne({email}).populate('reading');
+  return wishLists;
 };
 
 module.exports = {
@@ -138,4 +157,7 @@ module.exports = {
   addToWishListService,
   addToReading,
   addReview,
+  getReviewById,
+  getWishLists,
+  getReadingBook
 };

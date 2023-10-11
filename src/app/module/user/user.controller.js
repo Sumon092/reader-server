@@ -37,16 +37,18 @@ const loginUser = async (req, res) => {
     });
   }
 };
+
 const getAuthUser = async (req, res) => {
   try {
     const user = req.decoded;
     const token = req.headers.authorization.split(" ")[1];
-    await userService.getAuthUser(user);
+    const userData = await userService.getAuthUser(user);
     res.json({
       status: 200,
       success: true,
       email: user,
       token,
+      id: userData._id,
     });
   } catch (error) {
     res.json({
@@ -56,6 +58,7 @@ const getAuthUser = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   registerUser,
   loginUser,

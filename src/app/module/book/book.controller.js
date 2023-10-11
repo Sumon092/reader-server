@@ -63,9 +63,13 @@ const updateBook = async (req, res) => {
   try {
     const updateData = req.body;
     const bookId = req.params.bookId;
-    const authUser=req.user.email;
-    
-    const updateBook = await bookService.updateBook(bookId, updateData,authUser);
+    const authUser = req.user.email;
+
+    const updateBook = await bookService.updateBook(
+      bookId,
+      updateData,
+      authUser
+    );
     res.json({
       status: 200,
       success: true,
@@ -84,8 +88,8 @@ const updateBook = async (req, res) => {
 const deleteBook = async (req, res) => {
   try {
     bookId = req.params.bookId;
-    const authUser=req.user.email;
-    await bookService.deleteBook(bookId,authUser);
+    const authUser = req.user.email;
+    await bookService.deleteBook(bookId, authUser);
     res.json({
       status: 200,
       success: true,
@@ -103,8 +107,8 @@ const deleteBook = async (req, res) => {
 const addToWishList = async (req, res) => {
   try {
     const email = req.user.email;
-    const bookId = req.body.bookId;
-    const wishListed = await bookService.addToWishListService(email, bookId);
+    const { id } = req.params;
+    const wishListed = await bookService.addToWishListService(email, id);
     res.json({
       status: 200,
       success: true,
@@ -122,8 +126,8 @@ const addToWishList = async (req, res) => {
 const addToReading = async (req, res) => {
   try {
     const email = req.user.email;
-    const bookId = req.body.bookId;
-    const addedReading = await bookService.addToReading(email, bookId);
+    const { id } = req.params;
+    const addedReading = await bookService.addToReading(email, id);
     res.json({
       status: 200,
       message: "Book added to reading",
@@ -142,13 +146,50 @@ const addToReading = async (req, res) => {
 const addReviewController = async (req, res) => {
   const { bookId } = req.params;
   const { review } = req.body;
-
   try {
     const updatedBook = await bookService.addReview(bookId, review);
-    res.json({ success: true, book: updatedBook, message: 'Review added successfully.' });
+    res.json({
+      success: true,
+      book: updatedBook,
+      message: "Review added successfully.",
+    });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
+};
+
+const getReview = async (req, res) => {
+  const { bookId } = req.params;
+
+  try {
+    const review = await bookService.getReviewById(bookId);
+
+    res.json({
+      success: true,
+      data: review,
+      message: "Review added successfully.",
+    });
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+};
+const getWishList = async (req, res) => {
+  const authEmail = req.user.email;
+  const result = await bookService.getWishLists(authEmail);
+  res.json({
+    success: true,
+    message: "WishListed book fetched successfully",
+    data: result,
+  });
+};
+const getReadingList = async (req, res) => {
+  const authEmail = req.user.email;
+  const result = await bookService.getReadingBook(authEmail);
+  res.json({
+    success: true,
+    message: "WishListed book fetched successfully",
+    data: result,
+  });
 };
 
 module.exports = {
@@ -159,5 +200,8 @@ module.exports = {
   deleteBook,
   addToWishList,
   addToReading,
-  addReviewController
+  addReviewController,
+  getReview,
+  getWishList,
+  getReadingList,
 };
